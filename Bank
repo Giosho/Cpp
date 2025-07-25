@@ -1,8 +1,10 @@
 #include <iostream>
+
+#include <fstream>
+
 using namespace std;
 
-int main()
-{
+void Bank() {
     string name;
     string pass;
 
@@ -13,68 +15,83 @@ int main()
 
     // Твърдо кодирани потребителско име и парола — лесно се "хакват".
     //  Поне направи променливите const или използвай файл/масив с валидни акаунти.
+    bool brick = false;
+   
+    while (brick == false) {
+        if (name == "user" && pass == "pass123") {
+            cout << "Welcome!" << endl;
 
-    if (name == "user" && pass == "pass123")
-    {
-        cout << "Welcome!" << endl;
+            int mon = 2000; // Стартов баланс
+            int nmon; // Не е нужно да имаш отделна променлива nmon — просто обновявай `mon`.
+            string option;
+            cout << "do you wanna add/take/view your money or to leave your account /exit/?" << endl;
+            cin >> option;
 
-        int mon = 2000;  // Стартов баланс
-        int nmon;        // Не е нужно да имаш отделна променлива nmon — просто обновявай `mon`.
-        string option;
-        cout << "do you wanna add/take/view your money?" << endl;
-        cin >> option;
+            //   ако потребителят въведе "Add" или "ADD", няма да работи.
+            //  Решение: превърни `option` в малки букви преди проверката или използвай `tolower()`.
 
-        //   ако потребителят въведе "Add" или "ADD", няма да работи.
-        //  Решение: превърни `option` в малки букви преди проверката или използвай `tolower()`.
+            if (option == "add") {
+                int add;
+                cout << "How much do you want to add?" << endl;
+                cin >> add;
 
-        if (option == "add")
-        {
-            int add;
-            cout << "How much do you want to add?" << endl;
-            cin >> add;
-
-            //  Няма проверка дали числото е отрицателно.
-            if (add < 0) {
-                cout << "Can't add negative amount!" << endl;
-            } else {
-                mon += add;  // Модифицирай директно `mon`
-                cout << "Your balance is now: " << mon << endl;
+                //  Няма проверка дали числото е отрицателно.
+                if (add < 0) {
+                    cout << "Can't add negative amount!" << endl;
+                }
+                else {
+                    mon += add; // Модифицирай директно `mon`
+                    cout << "Your balance is now: " << mon << endl;
+                }
             }
-        }
-        else if (option == "take")
-        {
-            int take;
-            cout << "How much do you want to take?" << endl;
-            cin >> take;
+            else if (option == "take") {
+                int take;
+                cout << "How much do you want to take?" << endl;
+                cin >> take;
 
-            //  Няма проверка дали има достатъчно пари
-            if (take > mon) {
-                cout << "Not enough money!" << endl;
-            } else if (take < 0) {
-                cout << "Invalid amount!" << endl;
-            } else {
-                mon -= take;
-                cout << "Your balance is now: " << mon << endl;
+                //  Няма проверка дали има достатъчно пари
+                if (take > mon) {
+                    cout << "Not enough money!" << endl;
+                }
+                else if (take < 0) {
+                    cout << "Invalid amount!" << endl;
+                }
+                else {
+                    mon -= take;
+                    cout << "Your balance is now: " << mon << endl;
+                }
             }
-        }
-        else if (option == "view")
-        {
-            cout << "Your balance is: " << mon << endl;
-        }
-        else
-        {
-            cout << "ERROR: Invalid option!" << endl;
-        }
+            else if (option == "view") {
+                cout << "Your balance is: " << mon << endl;
+            }
+            else if (option == "exit") {
+                brick = true;
+            }
+            else {
+                cout << "ERROR: Invalid option!" << endl;
+            }
 
-        // Потребителят може да избере само едно действие, след това програмата приключва.
-        // Направи цикъл, който позволява многократни действия, докато напише "exit"
+            // Потребителят може да избере само едно действие, след това програмата приключва.
+            // Направи цикъл, който позволява многократни действия, докато напише "exit"
+        }
+        else {
+            cout << "Wrong login!" << endl;
+        }
     }
-    else
-    {
-        cout << "Wrong login!" << endl;
-    }
-
-    return 0;
 }
 
-// Опитай се да научиш как работи #include <fstream>
+    int main()
+    {
+        string option;
+        cout << "Log in/Register/Exit" << endl;
+        if (option == "Log in" || option == "log in" || option == "login")
+        {
+
+        }
+        bool flag = false;
+        while (flag == false) {
+            Bank();
+        }
+        return 0;
+    }
+    // Опитай се да научиш как работи #include <fstream>
