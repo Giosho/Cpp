@@ -1,38 +1,45 @@
-// FirstCPP.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
-using namespace std;  // This allows you to omit std:: every time
+using namespace std;
 
 int main()
 {
     string name;
     string pass;
-    
+
     cout << "Enter Name" << endl;
     cin >> name;
     cout << "Enter Password" << endl;
     cin >> pass;
 
+    // Твърдо кодирани потребителско име и парола — лесно се "хакват".
+    //  Поне направи променливите const или използвай файл/масив с валидни акаунти.
+
     if (name == "user" && pass == "pass123")
     {
         cout << "Welcome!" << endl;
-        int mon = 2000;
-        int nmon;
+
+        int mon = 2000;  // Стартов баланс
+        int nmon;        // Не е нужно да имаш отделна променлива nmon — просто обновявай `mon`.
         string option;
         cout << "do you wanna add/take/view your money?" << endl;
         cin >> option;
 
+        //   ако потребителят въведе "Add" или "ADD", няма да работи.
+        //  Решение: превърни `option` в малки букви преди проверката или използвай `tolower()`.
+
         if (option == "add")
         {
             int add;
-
             cout << "How much do you want to add?" << endl;
             cin >> add;
-            nmon = mon + add;
 
-            cout << "Your balance is now: " << endl;
-            cout << nmon << endl;
+            //  Няма проверка дали числото е отрицателно.
+            if (add < 0) {
+                cout << "Can't add negative amount!" << endl;
+            } else {
+                mon += add;  // Модифицирай директно `mon`
+                cout << "Your balance is now: " << mon << endl;
+            }
         }
         else if (option == "take")
         {
@@ -40,34 +47,34 @@ int main()
             cout << "How much do you want to take?" << endl;
             cin >> take;
 
-            nmon = mon - take;
-            cout << "Your balance is now: " << endl;
-            cout << nmon << endl;
+            //  Няма проверка дали има достатъчно пари
+            if (take > mon) {
+                cout << "Not enough money!" << endl;
+            } else if (take < 0) {
+                cout << "Invalid amount!" << endl;
+            } else {
+                mon -= take;
+                cout << "Your balance is now: " << mon << endl;
+            }
         }
         else if (option == "view")
         {
-            cout << "your balance is: " << endl;
-            cout << mon << endl;
+            cout << "Your balance is: " << mon << endl;
         }
         else
         {
-            cout << "ERROR" << endl;
+            cout << "ERROR: Invalid option!" << endl;
         }
+
+        // Потребителят може да избере само едно действие, след това програмата приключва.
+        // Направи цикъл, който позволява многократни действия, докато напише "exit"
     }
     else
     {
-        cout << "wrong log in" << endl;
+        cout << "Wrong login!" << endl;
     }
-    
+
+    return 0;
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+// Опитай се да научиш как работи #include <fstream>
