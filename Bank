@@ -4,7 +4,49 @@
 
 using namespace std;
 
-void Bank() {
+void Register()
+{
+    ofstream output;
+
+    output.open("info.txt");
+
+    string reg;
+    string pass;
+    string conpass;
+    cout << "Register!" << endl;
+
+    cout << "Name:" << endl;
+    cin >> reg;
+    cout << "Type Password" << endl;
+    cin >> pass;
+    cout << "Confirm Password" << endl;
+    cin >> conpass;
+
+    if (pass == conpass)
+    {
+        Bank();
+    }
+    else
+    {
+        cout << "Password is not the same!" << endl;
+    }
+    if (output.fail())
+    {
+        cout << "Error to craete file." << endl;
+        return;
+    }
+
+    output << reg << endl;
+    output << pass << endl;
+    output.close();
+    cout << "Log In saved." << endl;
+
+    cin.get();
+    return;
+}
+
+void Login()
+{
     string name;
     string pass;
 
@@ -12,6 +54,10 @@ void Bank() {
     cin >> name;
     cout << "Enter Password" << endl;
     cin >> pass;
+}
+
+void Bank() {
+   
 
     // Твърдо кодирани потребителско име и парола — лесно се "хакват".
     //  Поне направи променливите const или използвай файл/масив с валидни акаунти.
@@ -82,15 +128,23 @@ void Bank() {
 
     int main()
     {
+        
         string option;
         cout << "Log in/Register/Exit" << endl;
         if (option == "Log in" || option == "log in" || option == "login")
+        {
+            Bank();
+        }
+        else if (option == "Register" || option == "register")
         {
 
         }
         bool flag = false;
         while (flag == false) {
-            Bank();
+            if (option == "Log in" || option == "log in" || option == "login")
+            {
+                Bank();
+            }
         }
         return 0;
     }
