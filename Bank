@@ -1,8 +1,97 @@
 #include <iostream>
-
+#include <string>
 #include <fstream>
 
 using namespace std;
+
+bool Login(string& username, string& password)
+{
+    string fileUser, filePass;
+    ifstream input("info.txt");
+
+    if (!input) {
+        cout << "No registration found. Please register first." << endl;
+        return false;
+    }
+
+    getline(input, fileUser);
+    getline(input, filePass);
+    input.close();
+
+    while (true) {
+        cout << "Enter Name:" << endl;
+        cin >> username;
+        cout << "Enter Password:" << endl;
+        cin >> password;
+
+        if (username == fileUser && password == filePass) {
+            cout << "Login successful!" << endl;
+            return true;
+        }
+        else {
+            cout << "Incorrect username or password!" << endl;
+        }
+    }
+}
+
+void Bank(string name, string pass) {
+
+
+    // Твърдо кодирани потребителско име и парола — лесно се "хакват".
+    //  Поне направи променливите const или използвай файл/масив с валидни акаунти.
+    bool brick = false;
+
+    while (brick == false) {
+        cout << "Welcome!" << endl;
+
+        int mon = 2000;
+        string option;
+        cout << "do you wanna add/take/view your money or to leave your account /exit/?" << endl;
+        cin >> option;
+
+        if (option == "add") {
+            int add;
+            cout << "How much do you want to add?" << endl;
+            cin >> add;
+
+            if (add < 0) {
+                cout << "Can't add negative amount!" << endl;
+            }
+            else {
+                mon += add;
+                cout << "Your balance is now: " << mon << endl;
+            }
+        }
+        else if (option == "take") {
+            int take;
+            cout << "How much do you want to take?" << endl;
+            cin >> take;
+
+            if (take > mon) {
+                cout << "Not enough money!" << endl;
+            }
+            else if (take < 0) {
+                cout << "Invalid amount!" << endl;
+            }
+            else {
+                mon -= take;
+                cout << "Your balance is now: " << mon << endl;
+            }
+        }
+        else if (option == "view") {
+            cout << "Your balance is: " << mon << endl;
+        }
+        else if (option == "exit") {
+            brick = true;
+        }
+        else {
+            cout << "Invalid option!" << endl;
+        }
+
+        // Потребителят може да избере само едно действие, след това програмата приключва.
+        // Направи цикъл, който позволява многократни действия, докато напише "exit"
+    }
+}
 
 void Register()
 {
@@ -24,128 +113,47 @@ void Register()
 
     if (pass == conpass)
     {
-        Bank();
+        if (output.fail())
+        {
+            cout << "Error to craete file." << endl;
+            return;
+        }
+
+        output << reg << endl;
+        output << pass << endl;
+        output.close();
+        cout << "Log In saved." << endl;
     }
     else
     {
         cout << "Password is not the same!" << endl;
     }
-    if (output.fail())
-    {
-        cout << "Error to craete file." << endl;
-        return;
-    }
-
-    output << reg << endl;
-    output << pass << endl;
-    output.close();
-    cout << "Log In saved." << endl;
 
     cin.get();
     return;
 }
 
-void Login()
-{
-    string name;
-    string pass;
+int main() {
+    string user, pass;
+    string option;
 
-    cout << "Enter Name" << endl;
-    cin >> name;
-    cout << "Enter Password" << endl;
-    cin >> pass;
-}
+    cout << "Log in/Register/Exit" << endl;
+    cin >> option;
 
-void Bank() {
-   
-
-    // Твърдо кодирани потребителско име и парола — лесно се "хакват".
-    //  Поне направи променливите const или използвай файл/масив с валидни акаунти.
-    bool brick = false;
-   
-    while (brick == false) {
-        if (name == "user" && pass == "pass123") {
-            cout << "Welcome!" << endl;
-
-            int mon = 2000; // Стартов баланс
-            int nmon; // Не е нужно да имаш отделна променлива nmon — просто обновявай `mon`.
-            string option;
-            cout << "do you wanna add/take/view your money or to leave your account /exit/?" << endl;
-            cin >> option;
-
-            //   ако потребителят въведе "Add" или "ADD", няма да работи.
-            //  Решение: превърни `option` в малки букви преди проверката или използвай `tolower()`.
-
-            if (option == "add") {
-                int add;
-                cout << "How much do you want to add?" << endl;
-                cin >> add;
-
-                //  Няма проверка дали числото е отрицателно.
-                if (add < 0) {
-                    cout << "Can't add negative amount!" << endl;
-                }
-                else {
-                    mon += add; // Модифицирай директно `mon`
-                    cout << "Your balance is now: " << mon << endl;
-                }
-            }
-            else if (option == "take") {
-                int take;
-                cout << "How much do you want to take?" << endl;
-                cin >> take;
-
-                //  Няма проверка дали има достатъчно пари
-                if (take > mon) {
-                    cout << "Not enough money!" << endl;
-                }
-                else if (take < 0) {
-                    cout << "Invalid amount!" << endl;
-                }
-                else {
-                    mon -= take;
-                    cout << "Your balance is now: " << mon << endl;
-                }
-            }
-            else if (option == "view") {
-                cout << "Your balance is: " << mon << endl;
-            }
-            else if (option == "exit") {
-                brick = true;
-            }
-            else {
-                cout << "ERROR: Invalid option!" << endl;
-            }
-
-            // Потребителят може да избере само едно действие, след това програмата приключва.
-            // Направи цикъл, който позволява многократни действия, докато напише "exit"
-        }
-        else {
-            cout << "Wrong login!" << endl;
+    if (option == "Register" || option == "register") {
+        Register();
+    }
+    else if (option == "Login" || option == "login") {
+        if (Login(user, pass)) {
+            Bank(user, pass);
         }
     }
-}
-
-    int main()
-    {
-        
-        string option;
-        cout << "Log in/Register/Exit" << endl;
-        if (option == "Log in" || option == "log in" || option == "login")
-        {
-            Bank();
-        }
-        else if (option == "Register" || option == "register")
-        {
-
-        }
-        bool flag = false;
-        while (flag == false) {
-            if (option == "Log in" || option == "log in" || option == "login")
-            {
-                Bank();
-            }
-        }
+    else if (option == "Exit" || option == "exit") {
         return 0;
     }
-    // Опитай се да научиш как работи #include <fstream>
+    else {
+        cout << "Invalid option!" << endl;
+    }
+
+    return 0;
+}
